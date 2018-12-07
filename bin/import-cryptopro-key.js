@@ -2,13 +2,15 @@ require('../lib/gostKeys');
 const fs = require('fs');
 const gostCrypto = require('../lib/gostCrypto');
 
-
-let cerPath = './test/certificate.cer';
-let pKeyPath = './test/privateKey.pkey';
-
-
 let alias = 'alias';
 let password = '';
+
+
+let cerPath = './test2012cer/certificate.cer';
+let pKeyPath = './test2012cer/privateKey.pkey';
+alias = readFromFile('./test2012cer/alias');
+
+
 
 let header = 'header.key';
 let name = 'name.key';
@@ -24,7 +26,22 @@ let primary2Content;
 let masksContent;
 let masks2Content;
 
-alias = readFromFile('./test/alias');
+
+/*
+this.parsedOptions = {};
+const cli = createCli();
+
+this.parsedOptions = cli.options;
+
+cerPath = this.parsedOptions.certificate;
+pKeyPath = this.parsedOptions.certificate;
+alias = this.parsedOptions.alias;
+password = this.parsedOptions.password;
+*/
+
+
+
+
 
 
 const dir = './' + alias;
@@ -60,7 +77,7 @@ function importPrivateKey() {
     // Add key to conatiner
 
 
-    return keyContainer.setKey(privateKey, '').then(function () {
+    return keyContainer.setKey(privateKey, password).then(function () {
         // Add certificate to container
         return keyContainer.setCertificate(certificate);
     }).then(function () {
@@ -85,7 +102,33 @@ function importPrivateKey() {
         writeToFile(masks, Buffer.from(masksContent, 'base64'));
         writeToFile(masks2, Buffer.from(masks2Content, 'base64'));
 
+        console.log(keyContainer.header.items.keyContainerContent.items.primaryCertificate.items.signatureAlgorithm.item.item.items.algorithm)
         console.log('Success: The private key has been imported.');
     });
 }
 
+
+/*
+function createCli() {
+    const cli = require('cli')
+        .enable('version')
+        .setApp(__dirname + '/../package.json')
+        .setUsage(this.toolName+' [OPTIONS]');
+
+    var containerFiles = [];
+    for (var key in this.containerKeysFiles) {
+        containerFiles.push('"'+this.containerKeysFiles[key]+'"');
+    }
+    this.definedOptions.container[1] += ' '+containerFiles.join(', ');
+
+    cli.width = 120;
+    cli.option_width = 30;
+    cli.parse(this.definedOptions);
+
+    if (null == cli.options.container) {
+        cli.getUsage();
+        cli.exit(2);
+    }
+
+    return cli;
+}*/
