@@ -1,9 +1,6 @@
 Pure Javascript implementation of WebCrypto API interfaces and Public Key 
 Infrastructure for GOST algorithms (Russian Cryptographic Standards)
 
-Documentation, demonstartion, examples, references:
-
-http://gostcrypto.com
 
 Copyright (c) 2014-2016, Rudolf Nickolaev. 
 All rights reserved.
